@@ -1,15 +1,42 @@
+const service = {
+  getData() {
+    return Promise.resolve('{"answer":42}');
+  }
+}
+
 const machine = {
   state: 'idle',
   transitions: {
     'idle': {
-      run: function () { }
+      run: function () {
+        this.changeStateTo('fetching');
+        service.getData().then(
+          data => {
+            try {
+              this.dispatch('success', JSON.parse(data));
+            } catch (error) {
+              this.dispatch('failure', error)
+            }
+          },
+          error => this.dispatch('failure', error)
+        );
+      }
     },
     'fetching': {
-      success: function () { },
-      failure: function () { }
+      success: function () { 
+        console.log('Sucess...');
+        this.changeStateTo('idle');
+      },
+      failure: function () { 
+        console.log('Failure...');
+        this.changeStateTo('error');
+      }
     },
     'error': {
-      retry: function () { }
+      retry: function () {
+        this.changeStateTo('idle');
+        this.dispatch('run');
+       }
     }
   },
   dispatch(action, ...payload) {
@@ -22,3 +49,5 @@ const machine = {
     this.state = newState
   }
 }
+
+machine.dispatch('run');
