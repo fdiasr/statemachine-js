@@ -1,0 +1,30 @@
+{
+  "name": "statemachine",
+  "version": "1.0.0",
+  "description": "State Machine example in JS",
+  "main": "service.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "testw": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fdiasdev/statemachine-js.git"
+  },
+  "author": "Fernando Dias",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fdiasdev/statemachine-js/issues"
+  },
+  "homepage": "https://github.com/fdiasdev/statemachine-js#readme"
+}
