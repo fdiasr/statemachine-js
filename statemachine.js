@@ -39,13 +39,13 @@ const machine = {
        }
     }
   },
-  dispatch(action, ...payload) {
+  dispatch(actionName, ...payload) {
     const action = this.transitions[this.state][actionName]
     if (action) {
       action.apply(machine, ...payload)
     }
   },
-  changeStatusTo(newState) {
+  changeStateTo(newState) {
     this.state = newState
   }
 }
