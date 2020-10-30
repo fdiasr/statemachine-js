@@ -1,20 +1,32 @@
-import { factory, colors, timer } from '../traffic-lights.js';
+import { factory, timer, stateList, timerList } from '../traffic-lights.js';
 
-const tl = factory()
+jest.useFakeTimers()
 
 describe('Traffic Lights Test', () => {
     it('returns Red light by default', () => {
-        expect(tl.color).toBe(colors.RED)
-        expect(tl.timer).toBe(timer.RED)
+        const tl = factory()
+        expect(tl.state).toBe(stateList.RED)
+        expect(tl.timer()).toBe(timerList.RED)
     })
     it('returns Green light after first state change', () => {
+        const tl = factory()
         tl.change()
-        expect(tl.color).toBe(colors.GREEN)
-        expect(tl.timer).toBe(timer.GREEN)
+        expect(tl.state).toBe(stateList.GREEN)
+        expect(tl.timer()).toBe(timerList.GREEN)
     })
     it('returns Yellow light after second state change', () => {
+        const tl = factory()
         tl.change()
-        expect(tl.color).toBe(colors.YELLOW)
-        expect(tl.timer).toBe(timer.YELLOW)
+        tl.change()
+        expect(tl.state).toBe(stateList.YELLOW)
+        expect(tl.timer()).toBe(timerList.YELLOW)
+    })
+
+    it('returns Green light after timer interval reached and calls change function', () => {
+        const tl = factory()
+        timer(tl)
+        expect(setTimeout).toHaveBeenCalledTimes(1);
+        expect(setTimeout).toHaveBeenLastCalledWith(tl.trigger, 30000);
+        jest.clearAllTimers()
     })
 })

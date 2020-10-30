@@ -1,48 +1,47 @@
-const colors = {
-    RED: 'red',
-    GREEN: 'greeb',
-    YELLOW: 'yellow'
-}
+const RED = 'RED'
+const GREEN = 'GREEN'
+const YELLOW = 'YELLOW'
 
-const timer = {
+const stateList = { RED, GREEN, YELLOW }
+
+const timerList = {
     RED: 30,
     GREEN: 25,
     YELLOW: 5
 }
 
+const transition = {
+    RED: GREEN,
+    GREEN: YELLOW,
+    YELLOW: RED
+}
+
 class TrafficLights {
-    constructor(color = colors.RED) {
-        this.color = color
-        this.timer = timer[color.toUpperCase()]
+    constructor(state = stateList.RED) {
+        this.state = state
     }
 
-    current() {
-        return this.color
+    timer() {
+        return timerList[this.state]
     }
 
     change() {
-        if (this.color === colors.RED) {
-            this.color = colors.GREEN
-            this.timer = timer.GREEN
-            return
-        }
-        if (this.color === colors.GREEN) {
-            this.color = colors.YELLOW
-            this.timer = timer.YELLOW
-            return
-        }
-        if (this.color === colors.YELLOW) {
-            this.color = colors.RED
-            this.timer = timer.RED
-            return
-        }
-        throw Error;
+        // TODO verify and throw error if not found, and set RED as default fallback state
+        const nextState = transition[this.state]
+        this.state = nextState
+    }
+
+    trigger() {
+        console.log('Changeing State')
+        console.log('From: ', this.state())
+        this.change()
+        console.log('To: ', this.state())
+        timer(this)
     }
 }
 
+const factory = () => new TrafficLights
 
-const factory = () => {
-    return new TrafficLights
-}
+const timer = tl => setTimeout(tl.trigger, tl.timer() * 1000)
 
-export { factory, colors, timer }
+export { factory, timer, stateList, timerList }
